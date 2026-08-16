@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}
+  Empresas — FinAtlas
+{% endblock %}
+{% block content %}
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-semibold">Empresas</h1>
+    <a href="{% url 'company_create' %}" class="bg-slate-900 text-white rounded-md px-4 py-2 text-sm hover:bg-slate-800">Nova empresa</a>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <p class="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-md px-3 py-2 mb-4">{{ message }}</p>
+    {% endfor %}
+  {% endif %}
+
+  <table class="w-full bg-white rounded-lg shadow overflow-hidden text-sm">
+    <thead class="bg-slate-100 text-left">
+      <tr>
+        <th class="px-4 py-2">Nome</th>
+        <th class="px-4 py-2">Tipo</th>
+        <th class="px-4 py-2">Status</th>
+        <th class="px-4 py-2"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for company in companies %}
+        <tr class="border-t border-slate-100">
+          <td class="px-4 py-2">{{ company.nome }}</td>
+          <td class="px-4 py-2">{{ company.get_tipo_display }}</td>
+          <td class="px-4 py-2">
+            {% if company.ativo %}
+              <span class="text-emerald-700">Ativa</span>
+            {% else %}
+              <span class="text-slate-400">Inativa</span>
+            {% endif %}
+          </td>
+          <td class="px-4 py-2 text-right space-x-3">
+            <a href="{% url 'company_update' company.pk %}" class="text-slate-600 hover:text-slate-900">Editar</a>
+            <form action="{% url 'company_toggle_active' company.pk %}" method="post" class="inline">
+              {% csrf_token %}
+              <button type="submit" class="text-slate-600 hover:text-slate-900">
+                {% if company.ativo %}
+                  Desativar
+                {% else %}
+                  Ativar
+                {% endif %}
+              </button>
+            </form>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="4" class="px-4 py-6 text-center text-slate-400">Nenhuma empresa cadastrada.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

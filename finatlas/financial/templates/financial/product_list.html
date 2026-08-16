@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}
+  Produtos — FinAtlas
+{% endblock %}
+{% block content %}
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-semibold">Produtos</h1>
+    <a href="{% url 'product_create' %}" class="bg-slate-900 text-white rounded-md px-4 py-2 text-sm hover:bg-slate-800">Novo produto</a>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <p class="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-md px-3 py-2 mb-4">{{ message }}</p>
+    {% endfor %}
+  {% endif %}
+
+  <table class="w-full bg-white rounded-lg shadow overflow-hidden text-sm">
+    <thead class="bg-slate-100 text-left">
+      <tr>
+        <th class="px-4 py-2">Nome</th>
+        <th class="px-4 py-2">Empresa</th>
+        <th class="px-4 py-2">Status</th>
+        <th class="px-4 py-2"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+        <tr class="border-t border-slate-100">
+          <td class="px-4 py-2">{{ product.nome }}</td>
+          <td class="px-4 py-2">{{ product.company.nome }}</td>
+          <td class="px-4 py-2">
+            {% if product.ativo %}
+              <span class="text-emerald-700">Ativo</span>
+            {% else %}
+              <span class="text-slate-400">Inativo</span>
+            {% endif %}
+          </td>
+          <td class="px-4 py-2 text-right space-x-3">
+            <a href="{% url 'product_update' product.pk %}" class="text-slate-600 hover:text-slate-900">Editar</a>
+            <form action="{% url 'product_toggle_active' product.pk %}" method="post" class="inline">
+              {% csrf_token %}
+              <button type="submit" class="text-slate-600 hover:text-slate-900">
+                {% if product.ativo %}
+                  Desativar
+                {% else %}
+                  Ativar
+                {% endif %}
+              </button>
+            </form>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="4" class="px-4 py-6 text-center text-slate-400">Nenhum produto cadastrado.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

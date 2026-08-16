@@ -23,4 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", root_redirect, name="root"),
     path("", include("accounts.urls")),
+    path("financeiro/", include("financial.urls")),
 ]

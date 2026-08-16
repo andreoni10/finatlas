@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}
+  Empresa — FinAtlas
+{% endblock %}
+{% block content %}
+  <h1 class="text-2xl font-semibold mb-6">
+    {% if object %}
+      Editar empresa
+    {% else %}
+      Nova empresa
+    {% endif %}
+  </h1>
+  <form method="post" class="max-w-md bg-white rounded-lg shadow p-6 space-y-4">
+    {% csrf_token %}
+    <div>
+      <label class="block text-sm font-medium mb-1">Nome</label>
+      {{ form.nome }}
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1">Tipo</label>
+      {{ form.tipo }}
+    </div>
+    <div class="flex items-center gap-2">
+      {{ form.ativo }}
+      <label class="text-sm">Ativa</label>
+    </div>
+    <button type="submit" class="bg-slate-900 text-white rounded-md px-4 py-2 text-sm hover:bg-slate-800">Salvar</button>
+  </form>
+{% endblock %}
