@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "accounts",
+    "organizations",
 ]
 
 MIDDLEWARE = [
@@ -138,3 +140,11 @@ MAILERS = {
         "BACKEND": "django.core.mail.backends.console.EmailBackend",
     },
 }
+
+
+# Modelo de usuário customizado (definido em accounts/models.py)
+AUTH_USER_MODEL = "accounts.User"
+
+
+# Default primary key field type
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

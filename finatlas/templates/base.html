@@ -1,9 +1,30 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>
+      {% block title %}
+        FinAtlas
+      {% endblock %}
+    </title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   </head>
-  <body></body>
+  <body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+    <header class="bg-slate-900 text-white px-6 py-4 flex items-center justify-between">
+      <span class="font-semibold text-lg">FinAtlas</span>
+      {% if user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="post" class="m-0">
+          {% csrf_token %}
+          <button type="submit" class="text-sm text-slate-300 hover:text-white">Sair</button>
+        </form>
+      {% endif %}
+    </header>
+
+    <main class="flex-1 px-6 py-8">
+      {% block content %}
+      {% endblock %}
+    </main>
+  </body>
 </html>
