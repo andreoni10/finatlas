@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}
+  Assessor — FinAtlas
+{% endblock %}
+{% block content %}
+  <h1 class="text-2xl font-semibold mb-6">
+    {% if object %}
+      Editar assessor
+    {% else %}
+      Novo assessor
+    {% endif %}
+  </h1>
+  <form method="post" class="max-w-md bg-white rounded-lg shadow p-6 space-y-4">
+    {% csrf_token %}
+    {% if not object %}
+      <div>
+        <label class="block text-sm font-medium mb-1">Usuário (login)</label>
+        {{ form.username }}
+      </div>
+    {% endif %}
+    <div>
+      <label class="block text-sm font-medium mb-1">Nome</label>
+      {{ form.first_name }}
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1">Sobrenome</label>
+      {{ form.last_name }}
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1">E-mail</label>
+      {{ form.email }}
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1">Código de assessor</label>
+      {{ form.codigo_assessor }}
+    </div>
+    {% if not object %}
+      <div>
+        <label class="block text-sm font-medium mb-1">Senha inicial</label>
+        {{ form.password }}
+      </div>
+    {% else %}
+      <div class="flex items-center gap-2">
+        {{ form.ativo }}
+        <label class="text-sm">Ativo</label>
+      </div>
+    {% endif %}
+    {% if form.non_field_errors %}
+      <p class="text-sm text-red-600">{{ form.non_field_errors }}</p>
+    {% endif %}
+    <button type="submit" class="bg-slate-900 text-white rounded-md px-4 py-2 text-sm hover:bg-slate-800">Salvar</button>
+  </form>
+{% endblock %}

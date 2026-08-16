@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}
+  Comissão — FinAtlas
+{% endblock %}
+{% block content %}
+  <h1 class="text-2xl font-semibold mb-6">
+    {% if object %}
+      Editar comissão
+    {% else %}
+      Nova comissão
+    {% endif %}
+  </h1>
+  <form method="post" class="max-w-md bg-white rounded-lg shadow p-6 space-y-4">
+    {% csrf_token %}
+    <div>
+      <label class="block text-sm font-medium mb-1">Assessor</label>
+      {{ form.advisor }}
+    </div>
+    <div>
+      <label class="block text-sm font-medium mb-1">Percentual (%)</label>
+      {{ form.percentual }}
+    </div>
+    <div class="grid grid-cols-2 gap-3">
+      <div>
+        <label class="block text-sm font-medium mb-1">Mês</label>
+        {{ form.mes_referencia }}
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1">Ano</label>
+        {{ form.ano_referencia }}
+      </div>
+    </div>
+    {% if form.non_field_errors %}
+      <p class="text-sm text-red-600">{{ form.non_field_errors }}</p>
+    {% endif %}
+    <button type="submit" class="bg-slate-900 text-white rounded-md px-4 py-2 text-sm hover:bg-slate-800">Salvar</button>
+  </form>
+{% endblock %}

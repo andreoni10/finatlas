@@ -10,6 +10,11 @@ from accounts.models import User
 from .forms import CompanyForm, ProductForm
 from .models import Company, Product
 
+from accounts.models import AdvisorProfile
+
+from .forms import CommissionForm
+from .models import Commission
+
 
 class FinanceiroBaseMixin(RoleRequiredMixin, OrganizationRequiredMixin):
     """Combina restrição de papel (Financeiro) com escopo de organização."""
@@ -136,3 +141,62 @@ class ProductToggleActiveView(FinanceiroBaseMixin, View):
             f"Produto {'ativado' if product.ativo else 'desativado'} com sucesso.",
         )
         return redirect("product_list")
+
+
+class CommissionListView(FinanceiroBaseMixin, ListView):
+    model = Commission
+    template_name = "financial/commission_list.html"
+    context_object_name = "commissions"
+
+    def get_queryset(self):
+        qs = Commission.objects.filter(
+            organization=self.get_organization()
+        ).select_related("advisor__user")
+        advisor_id = self.request.GET.get("advisor")
+        if advisor_id:
+            qs = qs.filter(advisor_id=advisor_id)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["advisors"] = AdvisorProfile.objects.filter(
+            organization=self.get_organization(), ativo=True
+        )
+        return context
+
+
+class CommissionCreateView(FinanceiroBaseMixin, CreateView):
+    model = Commission
+    form_class = CommissionForm
+    template_name = "financial/commission_form.html"
+    success_url = reverse_lazy("commission_list")
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["organization"] = self.get_organization()
+        return kwargs
+
+    def form_valid(self, form):
+        form.instance.organization = self.get_organization()
+        form.instance.criado_por = self.request.user
+        messages.success(self.request, "Comissão cadastrada com sucesso.")
+        return super().form_valid(form)
+
+
+class CommissionUpdateView(FinanceiroBaseMixin, UpdateView):
+    model = Commission
+    form_class = CommissionForm
+    template_name = "financial/commission_form.html"
+    success_url = reverse_lazy("commission_list")
+
+    def get_queryset(self):
+        return Commission.objects.filter(organization=self.get_organization())
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["organization"] = self.get_organization()
+        return kwargs
+
+    def form_valid(self, form):
+        messages.success(self.request, "Comissão atualizada com sucesso.")
+        return super().form_valid(form)

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Comissões — FinAtlas{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-semibold">Comissões</h1>
+    <a href="{% url 'commission_create' %}" class="bg-slate-900 text-white rounded-md px-4 py-2 text-sm hover:bg-slate-800">
+        Nova comissão
+    </a>
+</div>
+
+<form method="get" class="mb-4 max-w-xs">
+    <select name="advisor" onchange="this.form.submit()" class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm">
+        <option value="">Todos os assessores</option>
+        {% for advisor in advisors %}
+        <option value="{{ advisor.pk }}" {% if request.GET.advisor == advisor.pk|stringformat:"s" %}selected{% endif %}>
+            {{ advisor.user.get_full_name }} ({{ advisor.codigo_assessor }})
+        </option>
+        {% endfor %}
+    </select>
+</form>
+
+{% if messages %}
+{% for message in messages %}
+<p class="text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-md px-3 py-2 mb-4">{{ message }}</p>
+{% endfor %}
+{% endif %}
+
+<table class="w-full bg-white rounded-lg shadow overflow-hidden text-sm">
+    <thead class="bg-slate-100 text-left">
+        <tr>
+            <th class="px-4 py-2">Assessor</th>
+            <th class="px-4 py-2">Período</th>
+            <th class="px-4 py-2">Percentual</th>
+            <th class="px-4 py-2"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for commission in commissions %}
+        <tr class="border-t border-slate-100">
+            <td class="px-4 py-2">{{ commission.advisor.user.get_full_name }}</td>
+            <td class="px-4 py-2">{{ commission.mes_referencia|stringformat:"02d" }}/{{ commission.ano_referencia }}</td>
+            <td class="px-4 py-2">{{ commission.percentual }}%</td>
+            <td class="px-4 py-2 text-right">
+                <a href="{% url 'commission_update' commission.pk %}" class="text-slate-600 hover:text-slate-900">Editar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4" class="px-4 py-6 text-center text-slate-400">Nenhuma comissão cadastrada.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

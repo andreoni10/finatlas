@@ -13,5 +13,13 @@
       <span class="block font-medium">Produtos</span>
       <span class="text-sm text-slate-500">Cadastrados por empresa</span>
     </a>
+    <a href="{% url 'advisor_list' %}" class="bg-white rounded-lg shadow p-5 hover:shadow-md">
+      <span class="block font-medium">Assessores</span>
+      <span class="text-sm text-slate-500">Cadastro e acesso</span>
+    </a>
+    <a href="{% url 'commission_list' %}" class="bg-white rounded-lg shadow p-5 hover:shadow-md">
+      <span class="block font-medium">Comissões</span>
+      <span class="text-sm text-slate-500">Percentual por período</span>
+    </a>
   </div>
 {% endblock %}

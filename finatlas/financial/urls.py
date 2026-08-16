@@ -12,4 +12,8 @@ urlpatterns = [
     path("produtos/novo/", views.ProductCreateView.as_view(), name="product_create"),
     path("produtos/<int:pk>/editar/", views.ProductUpdateView.as_view(), name="product_update"),
     path("produtos/<int:pk>/status/", views.ProductToggleActiveView.as_view(), name="product_toggle_active"),
+
+    path("comissoes/", views.CommissionListView.as_view(), name="commission_list"),
+    path("comissoes/nova/", views.CommissionCreateView.as_view(), name="commission_create"),
+    path("comissoes/<int:pk>/editar/", views.CommissionUpdateView.as_view(), name="commission_update"),
 ]
