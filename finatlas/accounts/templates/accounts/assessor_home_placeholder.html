@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block title %}
+  Painel do Assessor — FinAtlas
+{% endblock %}
+{% block content %}
+  <h1 class="text-2xl font-semibold mb-2">Meu Painel</h1>
+  <p class="text-slate-600">Olá, {{ user.get_full_name|default:user.username }}. Este painel será implementado na Etapa 8.</p>
+{% endblock %}

@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "accounts",
     "organizations",
     "financial",
+    "imports",
 ]
 
 MIDDLEWARE = [
@@ -149,3 +150,9 @@ AUTH_USER_MODEL = "accounts.User"
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Autenticação
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "post_login_redirect"
+LOGOUT_REDIRECT_URL = "login"
